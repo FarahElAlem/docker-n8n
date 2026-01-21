@@ -1,0 +1,107 @@
+{
+  "name": "weather-api",
+  "nodes": [
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        0,
+        0
+      ],
+      "id": "dc26d7d8-fe20-47a5-a30b-dd9775b5e890",
+      "name": "When clicking ‘Execute workflow’"
+    },
+    {
+      "parameters": {
+        "url": "https://api.open-meteo.com/v1/forecast?latitude=31.6342&longitude=-7.9999&current_weather=true",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.3,
+      "position": [
+        208,
+        0
+      ],
+      "id": "99bc7ff1-2ab1-4c44-81c8-4082bd04dddc",
+      "name": "HTTP Request"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "68659160-e38e-4af7-8527-8f3a7ede0f3a",
+              "name": "ville",
+              "value": "Casablanca",
+              "type": "string"
+            },
+            {
+              "id": "39f2a08a-7b3e-4a12-bbd6-e77bd0c0929c",
+              "name": "temperature",
+              "value": "={{ $json.current_weather.temperature }}{{ $json.current_weather_units.temperature }}",
+              "type": "string"
+            },
+            {
+              "id": "4660e3e9-91c5-43b3-8e41-bc8913cd68da",
+              "name": "vent",
+              "value": "={{ $json.current_weather.windspeed }}",
+              "type": "number"
+            },
+            {
+              "id": "9ea2d28c-d255-4751-b5d3-b7f5f17355c9",
+              "name": "moment",
+              "value": "={{ $json.current_weather.is_day === 1 ? \"Jour ☀️\" : \"Nuit 🌙\" }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        416,
+        0
+      ],
+      "id": "a50835ed-a081-4e27-9e16-71bacd2096ba",
+      "name": "Edit Fields"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "When clicking ‘Execute workflow’": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "availableInMCP": false
+  },
+  "versionId": "f845794c-38ed-44fd-a1af-b23f36703e5e",
+  "meta": {
+    "instanceId": "952043166d6bcfd9d9a7d1804a1a8d1db1232a61d055d1697ec47a219eaac1f0"
+  },
+  "id": "fenpCxx-1za_V4Yzn9Inf",
+  "tags": []
+}
